@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ma_todo_flutter/widgets/todoinput.dart';
+import 'package:ma_todo_flutter/widgets/todolist.dart';
 import 'package:modular_ui/modular_ui.dart';
 
 class TodoApp extends StatelessWidget {
@@ -44,7 +46,7 @@ class TodoApp extends StatelessWidget {
                     ),
                     MUIPrimaryInputField(
                       borderWidth: 0,
-                      prefixIcon: const Icon(
+                      suffixIcon: const Icon(
                         CupertinoIcons.search,
                         color: Colors.black,
                       ),
@@ -53,46 +55,7 @@ class TodoApp extends StatelessWidget {
                       controller: TextEditingController(text: ''),
                     ),
                     const SizedBox(height: 20),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Note #1",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Note #2",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Note #3",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Note #4",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ],
-                    ),
+                    const TodoList(),
                   ],
                 ),
               ),
@@ -105,7 +68,47 @@ class TodoApp extends StatelessWidget {
       floatingActionButton: FloatingActionButton.large(
         foregroundColor: Colors.white,
         backgroundColor: Colors.black,
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                final TextEditingController titleController =
+                    TextEditingController();
+                final TextEditingController descriptionController =
+                    TextEditingController();
+                return Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context)
+                          .viewInsets
+                          .bottom, // Gère le clavier
+                    ),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: IconButton(
+                            icon: const Icon(
+                              CupertinoIcons.arrow_down_circle_fill,
+                              color: Colors.black,
+                              size: 40,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context); // Ferme la modal
+                            },
+                          ),
+                        ),
+                        const MyCustomForm(), // Intègre ton formulaire ici
+                      ],
+                    ));
+              });
+        },
         child: const Icon(CupertinoIcons.add_circled_solid),
       ),
     );
