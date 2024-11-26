@@ -34,7 +34,7 @@ class TodoApp extends StatelessWidget {
                       'My Daily Tasks',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 25,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
