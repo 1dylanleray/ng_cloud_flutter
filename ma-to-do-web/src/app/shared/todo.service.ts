@@ -25,5 +25,8 @@ export class TodoService {
    deleteTodo(id:string){
      this.firestoreCollection.doc(id).delete();
    }
-
+   updateTodoTitle(id: string, newTitle: string): Promise<void> {
+    return this.firestoreCollection.doc(id).update({ title: newTitle });
+  }
+  
 }
