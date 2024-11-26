@@ -1,59 +1,30 @@
-# MaToDoWeb
+# Angular 14 To-Do App with Firebase
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.1.
 
-## Development server
+ ## How it works ?
+ 
+ :tv: Video tutorial on this same topic
+ Url : https://youtu.be/kzl4IKAC8O4
+ 
+ <a href="http://www.youtube.com/watch?feature=player_embedded&v=kzl4IKAC8O4
+" target="_blank"><img src="http://img.youtube.com/vi/kzl4IKAC8O4/0.jpg" 
+alt="Video demonstrating creation of an expense tracker application from scratch" width="500" height="400" border="10" /></a>
 
-To start a local development server, run:
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| :bar_chart:               |  List of Tutorials   |   | :moneybag:           | Support Us                           |
+|--------------------------:|:---------------------|---|---------------------:|:-------------------------------------|
+| Angular                   |http://bit.ly/2KQN9xF |   |Paypal                | https://goo.gl/bPcyXW                |
+| Asp.Net Core              |http://bit.ly/30fPDMg |   |Amazon   Affiliate    | https://geni.us/JDzpE                |
+| React                     |http://bit.ly/325temF |   |
+| Python                    |http://bit.ly/2ws4utg |   | :point_right:        | Follow Us                            |
+| Node.js                   |https://goo.gl/viJcFs |   |Website               |http://www.codaffection.com          |
+| Asp.Net MVC               |https://goo.gl/gvjUJ7 |   |YouTube               |https://www.youtube.com/codaffection  |
+| Flutter                   |https://bit.ly/3ggmmJz|   |Facebook              |https://www.facebook.com/codaffection |
+| Web API                   |https://goo.gl/itVayJ |   |Twitter               |https://twitter.com/CodAffection      |
+| MEAN Stack                |https://goo.gl/YJPPAH |   |
+| C# Tutorial               |https://goo.gl/s1zJxo |   |
+| Asp.Net WebForm           |https://goo.gl/GXC2aJ |   |
+| C# WinForm                |https://goo.gl/vHS9Hd |   |
+| MS SQL                    |https://goo.gl/MLYS9e |   |
+| Crystal Report            |https://goo.gl/5Vou7t |   |
+| CG Exercises in C Program |https://goo.gl/qEWJCs |   |
