@@ -1,4 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
-.list-group-item span {
-    cursor: pointer;
+.bg-light {
+    background-color: #f8f9fa !important;
 }
+
+.text-black-50 {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.bg-success {
+    background-color: #198754 !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+.icon-default {
+    color: black;
+  }
+  
+  
+  
+  .icon-danger {
+    color: red;
+  }
+  
+  .icon-warning {
+    color: orange;
+  }
+  .text-success {
+    color: green !important;
+  }
+  
+  .text-black {
+    color: black !important;
+  }
+  
