@@ -46,11 +46,61 @@ class TodoList extends StatelessWidget {
           itemCount: todos.length,
           itemBuilder: (context, index) {
             final todo = todos[index].data() as Map<String, dynamic>;
+            final taskId = todos[index].id;
             final content = todo['content'] ?? '';
             final isDone = todo['isDone'] ?? false;
 
+            Future<void> _toggleTaskCompletion(bool? newValue) async {
+              try {
+                await FirebaseFirestore.instance
+                    .collection('todos')
+                    .doc(taskId)
+                    .update({'isDone': newValue});
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to update task: $e'),
+                    ),
+                  );
+                }
+              }
+            }
+
+            Future<void> _deleteTask() async {
+              try {
+                // Suppression de la tâche dans Firestore
+                await FirebaseFirestore.instance
+                    .collection('todos')
+                    .doc(todos[index].id)
+                    .delete();
+
+                // Affichage de la snackbar après la suppression réussie
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Task deleted.')),
+                  );
+                }
+              } catch (e) {
+                // Gestion des erreurs en cas d'échec de la suppression
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to delete task: $e')),
+                  );
+                }
+              }
+            }
+
             return Row(
               children: [
+                Checkbox(
+                  value: isDone,
+                  onChanged: (newValue) {
+                    _toggleTaskCompletion(newValue);
+                  },
+                  activeColor: Colors.green,
+                  shape: CircleBorder(),
+                ),
                 Expanded(
                   child: Text(
                     content,
@@ -78,11 +128,7 @@ class TodoList extends StatelessWidget {
                     size: 30,
                   ),
                   onPressed: () {
-                    // Supprimer l'élément de Firebase
-                    FirebaseFirestore.instance
-                        .collection('todos')
-                        .doc(todos[index].id)
-                        .delete();
+                    _deleteTask();
                   },
                 ),
               ],
