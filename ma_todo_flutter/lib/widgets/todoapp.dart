@@ -67,7 +67,7 @@ class TodoApp extends StatelessWidget {
           FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: FloatingActionButton.large(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
         onPressed: () {
           showModalBottomSheet(
               context: context,
@@ -104,7 +104,7 @@ class TodoApp extends StatelessWidget {
                             },
                           ),
                         ),
-                        const MyCustomForm(), // Intègre ton formulaire ici
+                        const CreateTaskForm(), // Intègre ton formulaire ici
                       ],
                     ));
               });

@@ -7,18 +7,18 @@ class TodoInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MyCustomForm();
+    return const CreateTaskForm();
   }
 }
 
-class MyCustomForm extends StatefulWidget {
-  const MyCustomForm({super.key});
+class CreateTaskForm extends StatefulWidget {
+  const CreateTaskForm({super.key});
 
   @override
-  MyCustomFormState createState() => MyCustomFormState();
+  CreateTaskFormState createState() => CreateTaskFormState();
 }
 
-class MyCustomFormState extends State<MyCustomForm> {
+class CreateTaskFormState extends State<CreateTaskForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _contentController = TextEditingController();
 
@@ -72,10 +72,24 @@ class MyCustomFormState extends State<MyCustomForm> {
             ),
             const SizedBox(height: 16),
             const SizedBox(height: 24),
-            ElevatedButton.icon(
+            TextButton.icon(
               onPressed: _addTask,
-              icon: const Icon(CupertinoIcons.floppy_disk, size: 20),
-              label: const Text("Save"),
+              icon: const Icon(
+                CupertinoIcons.floppy_disk,
+                size: 20,
+                color: Colors.black,
+              ),
+              label: const Text(
+                'Save',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              ),
             ),
           ],
         ),
