@@ -9,6 +9,8 @@ import { TodoService } from '../shared/todo.service';
 export class TodoComponent implements OnInit {
   todos: any[] = [];
   showForm: boolean = false;
+  showAlert: boolean = false;
+  showAlertDelete : boolean = false;
 
   constructor(private todoService: TodoService) {}
 
@@ -31,6 +33,10 @@ export class TodoComponent implements OnInit {
       this.todoService.addTodo(content.value);
       content.value = '';
       this.showForm = false;
+      this.showAlert = true;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 3000);
     }
   }
 
@@ -42,6 +48,10 @@ export class TodoComponent implements OnInit {
   // Supprime une tâche
   onDelete(id: string): void {
     this.todoService.deleteTodo(id);
+    this.showAlertDelete = true;
+      setTimeout(() => {
+        this.showAlertDelete = false;
+      }, 3000);
   }
 
   // Affiche ou masque le formulaire
@@ -52,7 +62,7 @@ export class TodoComponent implements OnInit {
   // Ajoute une tâche depuis le formulaire
   onSubmitForm(formValues: { field1: string }): void {
     this.todoService.addTodo(formValues.field1);
-    this.showForm = false; // Cache le formulaire
+    this.showForm = false;
   }
 
   // Active le mode édition
