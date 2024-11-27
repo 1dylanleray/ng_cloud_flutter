@@ -18,19 +18,19 @@ export class TodoComponent implements OnInit {
       .subscribe((items) => {
         this.todos = items.map((item: any) => ({
           ...item,
-          isEditing: false, // Ajout du mode édition par défaut
-          newTitle: item.title, // Pré-remplir avec le titre existant
+          isEditing: false,
+          newContent: item.content,
         }));
-        this.todos.sort((a: any, b: any) => a.isDone - b.isDone); // Trier les tâches
+        this.todos.sort((a: any, b: any) => a.isDone - b.isDone);
       });
   }
 
   // Ajoute une nouvelle tâche
-  onClick(titleInput: HTMLInputElement): void {
-    if (titleInput.value) {
-      this.todoService.addTodo(titleInput.value);
-      titleInput.value = ''; // Réinitialise le champ
-      this.showForm = false; // Cache le formulaire si actif
+  onClick(content: HTMLInputElement): void {
+    if (content.value) {
+      this.todoService.addTodo(content.value);
+      content.value = '';
+      this.showForm = false;
     }
   }
 
@@ -57,21 +57,21 @@ export class TodoComponent implements OnInit {
 
   // Active le mode édition
   enableEdit(item: any): void {
-    item.isEditing = true; // Passe la tâche en mode édition
+    item.isEditing = true;
   }
 
   // Annule le mode édition
   cancelEdit(item: any): void {
-    item.isEditing = false; // Désactive le mode édition
-    item.newTitle = item.title; // Réinitialise le titre
+    item.isEditing = false;
+    item.newContent = item.content;
   }
 
   // Soumet les modifications de la tâche
   onEditSubmit(item: any): void {
-    if (item.newTitle.trim()) {
-      this.todoService.updateTodoTitle(item.id, item.newTitle).then(() => {
-        item.title = item.newTitle; // Met à jour le titre localement
-        item.isEditing = false; // Désactive le mode édition
+    if (item.newContent.trim()) {
+      this.todoService.updateTodoTitle(item.id, item.newContent).then(() => {
+        item.content = item.newContent;
+        item.isEditing = false;
       });
     }
   }

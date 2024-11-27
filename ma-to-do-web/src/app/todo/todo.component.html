@@ -12,10 +12,10 @@
             </li>
 
             <li class="list-group-item mb-1 border py-0 rounded-3" *ngIf="showForm">
-                <form (ngSubmit)="onClick(titleInput)" class="d-flex flex-column align-items-center">
+                <form (ngSubmit)="onClick(content)" class="d-flex flex-column align-items-center">
                     <div class="mb-3 text-center">
-                        <label for="titleInput" class="form-label ">Tâche </label>
-                        <input type="text" id="titleInput" class="form-control w-100" #titleInput required
+                        <label for="content" class="form-label ">Tâche </label>
+                        <input type="text" id="content" class="form-control w-100" #content required
                             style="overflow-wrap: break-word; word-wrap: break-word; resize: none;" />
                     </div>
                     <div class="text-center" style="margin-top: -2px;">
@@ -30,7 +30,7 @@
                 <span *ngIf="!item.isEditing">
                     <i class="text-success" (click)="onStatusChange(item.id, !item.isDone)"
                         [ngClass]="item.isDone ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'"></i>
-                    {{ item.title }}
+                    {{ item.content }}
                     <span class="float-end">
                         <button class="btn btn-sm btn-warning me-2" (click)="enableEdit(item)"><i
                                 class="fa-solid fa-pen"></i></button>
@@ -43,7 +43,7 @@
                 <div *ngIf="item.isEditing">
                     <form (ngSubmit)="onEditSubmit(item)" class="d-flex justify-content-center align-items-center">
 
-                        <input type="text" [(ngModel)]="item.newTitle" name="newTitle"
+                        <input type="text" [(ngModel)]="item.newContent" name="newContent"
                             class="form-control d-inline-block w-60" required />
                         <button type="submit" class="btn btn-success btn-sm ms-1">
                             <i class="fa-solid fa-check fa-1x"></i>
