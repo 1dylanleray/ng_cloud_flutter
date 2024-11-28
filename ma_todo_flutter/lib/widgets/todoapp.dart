@@ -13,12 +13,6 @@ class TodoApp extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(40, 1.2 * kToolbarHeight, 40, 20),
         child: SizedBox(

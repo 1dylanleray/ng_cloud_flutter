@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ma_todo_flutter/widgets/todoinput.dart';
 
 class TodoList extends StatelessWidget {
   const TodoList({super.key});
@@ -118,7 +119,30 @@ class TodoList extends StatelessWidget {
                     size: 30,
                   ),
                   onPressed: () {
-                    // Ajouter votre logique pour modifier la tâche
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (context) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            left: 16,
+                            right: 16,
+                            top: 16,
+                            bottom:
+                                MediaQuery.of(context).viewInsets.bottom + 16,
+                          ),
+                          child: TodoInput(
+                            taskId: taskId, // L'ID de la tâche à modifier
+                            initialContent:
+                                content, // Le contenu actuel de la tâche
+                          ),
+                        );
+                      },
+                    );
                   },
                 ),
                 IconButton(

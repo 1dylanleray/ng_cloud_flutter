@@ -3,17 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoInput extends StatelessWidget {
-  const TodoInput({super.key});
+  final String?
+      taskId; // ID de la tâche existante (null pour une nouvelle tâche)
+  final String? initialContent;
+
+  const TodoInput({
+    super.key,
+    this.taskId,
+    this.initialContent,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const CreateTaskForm();
+    return CreateTaskForm(
+      taskId: taskId,
+      initialContent: initialContent,
+    );
   }
 }
 
 class CreateTaskForm extends StatefulWidget {
-  const CreateTaskForm({super.key});
+  final String? taskId;
+  final String? initialContent;
 
+  const CreateTaskForm({
+    super.key,
+    this.taskId,
+    this.initialContent,
+  });
   @override
   CreateTaskFormState createState() => CreateTaskFormState();
 }
@@ -23,27 +40,50 @@ class CreateTaskFormState extends State<CreateTaskForm> {
   final TextEditingController _contentController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    // Pré-remplir le champ si une tâche existante est fournie
+    if (widget.initialContent != null) {
+      _contentController.text = widget.initialContent!;
+    }
+  }
+
+  @override
   void dispose() {
     _contentController.dispose();
     super.dispose();
   }
 
-  Future<void> _addTask() async {
+  Future<void> _saveTask() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseFirestore.instance.collection('todos').add({
-          'content': _contentController.text,
-          'isDone': false, // Par défaut, la tâche n'est pas terminée
-        });
+        if (widget.taskId == null) {
+          // Ajouter une nouvelle tâche
+          await FirebaseFirestore.instance.collection('todos').add({
+            'content': _contentController.text,
+            'isDone': false,
+          });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('New task saved.')),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('New task saved.')),
+          );
+        } else {
+          // Mettre à jour une tâche existante
+          await FirebaseFirestore.instance
+              .collection('todos')
+              .doc(widget.taskId)
+              .update({'content': _contentController.text});
 
-        Navigator.pop(context); // Ferme la modale après ajout
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Task updated successfully.')),
+          );
+        }
+
+        Navigator.pop(context); // Fermer la modale après sauvegarde
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sorry, an error occured.')),
+          SnackBar(content: Text('Error: $e')),
         );
       }
     }
@@ -62,7 +102,9 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               controller: _contentController,
               maxLength: 20,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(),
+              decoration: const InputDecoration(
+                labelText: 'Task Content',
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please write something.';
@@ -70,10 +112,9 @@ class CreateTaskFormState extends State<CreateTaskForm> {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
             const SizedBox(height: 24),
             TextButton.icon(
-              onPressed: _addTask,
+              onPressed: _saveTask,
               icon: const Icon(
                 CupertinoIcons.floppy_disk,
                 size: 20,
@@ -81,9 +122,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
               ),
               label: const Text(
                 'Save',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
+                style: TextStyle(color: Colors.black),
               ),
               style: TextButton.styleFrom(
                 backgroundColor: Colors.transparent,
