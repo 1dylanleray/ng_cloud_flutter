@@ -8,18 +8,15 @@ class TodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Écouter les données Firestore
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('todos').snapshots(),
       builder: (context, snapshot) {
-        // Vérifier si les données sont en cours de chargement
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        // Vérifier s'il y a des erreurs
         if (snapshot.hasError) {
           return const Center(
             child: Text(
@@ -28,8 +25,6 @@ class TodoList extends StatelessWidget {
             ),
           );
         }
-
-        // Vérifier si les données sont disponibles
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(
             child: Text(
@@ -51,7 +46,7 @@ class TodoList extends StatelessWidget {
             final content = todo['content'] ?? '';
             final isDone = todo['isDone'] ?? false;
 
-            Future<void> _toggleTaskCompletion(bool? newValue) async {
+            Future<void> toggleTaskCompletion(bool? newValue) async {
               try {
                 await FirebaseFirestore.instance
                     .collection('todos')
@@ -68,22 +63,19 @@ class TodoList extends StatelessWidget {
               }
             }
 
-            Future<void> _deleteTask() async {
+            Future<void> deleteTask() async {
               try {
-                // Suppression de la tâche dans Firestore
                 await FirebaseFirestore.instance
                     .collection('todos')
                     .doc(todos[index].id)
                     .delete();
 
-                // Affichage de la snackbar après la suppression réussie
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Task deleted.')),
                   );
                 }
               } catch (e) {
-                // Gestion des erreurs en cas d'échec de la suppression
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to delete task: $e')),
@@ -97,7 +89,7 @@ class TodoList extends StatelessWidget {
                 Checkbox(
                   value: isDone,
                   onChanged: (newValue) {
-                    _toggleTaskCompletion(newValue);
+                    toggleTaskCompletion(newValue);
                   },
                   activeColor: Colors.green,
                   shape: CircleBorder(),
@@ -136,9 +128,8 @@ class TodoList extends StatelessWidget {
                                 MediaQuery.of(context).viewInsets.bottom + 16,
                           ),
                           child: TodoInput(
-                            taskId: taskId, // L'ID de la tâche à modifier
-                            initialContent:
-                                content, // Le contenu actuel de la tâche
+                            taskId: taskId,
+                            initialContent: content,
                           ),
                         );
                       },
@@ -152,7 +143,7 @@ class TodoList extends StatelessWidget {
                     size: 30,
                   ),
                   onPressed: () {
-                    _deleteTask();
+                    deleteTask();
                   },
                 ),
               ],

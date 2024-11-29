@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoInput extends StatelessWidget {
-  final String?
-      taskId; // ID de la tâche existante (null pour une nouvelle tâche)
+  final String? taskId;
   final String? initialContent;
 
   const TodoInput({
@@ -43,7 +42,6 @@ class CreateTaskFormState extends State<CreateTaskForm> {
   void initState() {
     super.initState();
 
-    // Pré-remplir le champ si une tâche existante est fournie
     if (widget.initialContent != null) {
       _contentController.text = widget.initialContent!;
     }
@@ -55,11 +53,10 @@ class CreateTaskFormState extends State<CreateTaskForm> {
     super.dispose();
   }
 
-  Future<void> _saveTask() async {
+  Future<void> saveTask() async {
     if (_formKey.currentState!.validate()) {
       try {
         if (widget.taskId == null) {
-          // Ajouter une nouvelle tâche
           await FirebaseFirestore.instance.collection('todos').add({
             'content': _contentController.text,
             'isDone': false,
@@ -69,7 +66,6 @@ class CreateTaskFormState extends State<CreateTaskForm> {
             const SnackBar(content: Text('New task saved.')),
           );
         } else {
-          // Mettre à jour une tâche existante
           await FirebaseFirestore.instance
               .collection('todos')
               .doc(widget.taskId)
@@ -80,7 +76,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
           );
         }
 
-        Navigator.pop(context); // Fermer la modale après sauvegarde
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e')),
@@ -114,7 +110,7 @@ class CreateTaskFormState extends State<CreateTaskForm> {
             ),
             const SizedBox(height: 24),
             TextButton.icon(
-              onPressed: _saveTask,
+              onPressed: saveTask,
               icon: const Icon(
                 CupertinoIcons.floppy_disk,
                 size: 20,

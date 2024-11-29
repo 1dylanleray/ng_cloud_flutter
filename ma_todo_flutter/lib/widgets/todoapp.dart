@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ma_todo_flutter/widgets/todoinput.dart';
 import 'package:ma_todo_flutter/widgets/todolist.dart';
 import 'package:modular_ui/modular_ui.dart';
@@ -12,32 +11,33 @@ class TodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      extendBodyBehindAppBar: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.8),
+        elevation: 10,
+        centerTitle: false,
+        title: const Text(
+          'My Daily Tasks',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(40, 1.2 * kToolbarHeight, 40, 20),
+        padding: const EdgeInsets.fromLTRB(40, kToolbarHeight + 30, 40, 20),
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               SingleChildScrollView(
-                // Permet le défilement
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'My Daily Tasks',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2.0),
-                      child: Divider(
-                        color: Colors.white,
-                      ),
-                    ),
                     MUIPrimaryInputField(
                       borderWidth: 0,
                       suffixIcon: const Icon(
@@ -46,9 +46,9 @@ class TodoApp extends StatelessWidget {
                       ),
                       hintText: '',
                       filledColor: Colors.white,
-                      controller: TextEditingController(text: ''),
+                      controller: TextEditingController(),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     const TodoList(),
                   ],
                 ),
@@ -59,51 +59,56 @@ class TodoApp extends StatelessWidget {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: FloatingActionButton.large(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.transparent,
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (BuildContext context) {
-                final TextEditingController titleController =
-                    TextEditingController();
-                final TextEditingController descriptionController =
-                    TextEditingController();
-                return Container(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context)
-                          .viewInsets
-                          .bottom, // Gère le clavier
-                    ),
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: IconButton(
-                            icon: const Icon(
-                              CupertinoIcons.arrow_down_circle_fill,
-                              color: Colors.black,
-                              size: 40,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context); // Ferme la modal
-                            },
-                          ),
-                        ),
-                        const CreateTaskForm(), // Intègre ton formulaire ici
-                      ],
-                    ));
-              });
-        },
-        child: const Icon(CupertinoIcons.add_circled_solid),
+      floatingActionButton: _buildFloatingActionButton(context),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton.large(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
+      onPressed: () => _showAddTaskModal(context),
+      child: const Icon(CupertinoIcons.add_circled_solid),
+    );
+  }
+
+  void _showAddTaskModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildModalCloseButton(context),
+              const CreateTaskForm(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildModalCloseButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: IconButton(
+        icon: const Icon(
+          CupertinoIcons.arrow_down_circle_fill,
+          color: Colors.black,
+          size: 40,
+        ),
+        onPressed: () => Navigator.pop(context),
       ),
     );
   }
